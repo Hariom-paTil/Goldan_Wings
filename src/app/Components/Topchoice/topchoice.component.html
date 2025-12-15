@@ -1,0 +1,23 @@
+<section class="topchoice">
+  <div class="topchoice__header">
+    <p class="eyebrow">Top Choices</p>
+    <h3>Most Loved Cakes</h3>
+  </div>
+
+  <div *ngIf="cakes?.length; else empty" class="topchoice__grid">
+    <div class="card" *ngFor="let cake of cakes">
+      <div class="card__image">
+        <img [src]="cake.imageUrl" [alt]="cake.name" />
+      </div>
+      <div class="card__body">
+        <h4>{{ cake.name }}</h4>
+        <p class="flavor">{{ cake.flavor }}</p>
+        <p class="price">$ {{ cake.price }}</p>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #empty>
+    <p class="topchoice__empty">Loading cakes...</p>
+  </ng-template>
+</section>

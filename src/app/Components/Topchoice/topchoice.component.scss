@@ -1,0 +1,84 @@
+.topchoice {
+  margin-top: 36px;
+  border: 2px solid #2a1a22;
+  border-radius: 10px;
+  padding: 18px;
+  background: #fff;
+}
+
+.topchoice__header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.topchoice__header .eyebrow {
+  color: #d57f1f;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+}
+
+.topchoice__header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #2a1a22;
+}
+
+.topchoice__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px;
+}
+
+.topchoice__empty {
+  text-align: center;
+  color: #6b4a4f;
+  font-weight: 700;
+  padding: 18px 0;
+}
+
+.card {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.card__image img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.card__body {
+  padding: 12px 14px;
+}
+
+.card__body h4 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.flavor {
+  margin: 0 0 6px;
+  color: #6b4a4f;
+  font-size: 0.9rem;
+}
+
+.price {
+  margin: 0;
+  font-weight: 800;
+  color: #d57f1f;
+}
+
+@media (max-width: 620px) {
+  .card__image img {
+    height: 140px;
+  }
+}

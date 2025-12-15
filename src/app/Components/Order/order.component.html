@@ -1,0 +1,26 @@
+<section class="order">
+  <div class="order__header">
+    <p class="eyebrow">Order</p>
+    <h2>Place Your Order</h2>
+  </div>
+
+  <form (ngSubmit)="placeOrder()" class="order__form">
+    <label>First Name
+      <input [(ngModel)]="firstName" name="firstName" required />
+    </label>
+
+    <label>Last Name
+      <input [(ngModel)]="lastName" name="lastName" required />
+    </label>
+
+    <label>Address
+      <textarea [(ngModel)]="address" name="address" rows="3"></textarea>
+    </label>
+
+    <label>Email
+      <input [(ngModel)]="email" name="email" type="email" />
+    </label>
+
+    <button class="place" type="submit">Place Order</button>
+  </form>
+</section>
