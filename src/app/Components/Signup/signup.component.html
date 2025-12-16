@@ -1,0 +1,30 @@
+<div class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal">
+    <h3>Sign In</h3>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label>
+        Email
+        <input formControlName="email" type="email" placeholder="you@example.com" />
+      </label>
+      <div class="field-error" *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
+        Please enter a valid email.
+      </div>
+
+      <label>
+        Password
+        <input formControlName="password" type="password" placeholder="Minimum 6 characters" />
+      </label>
+      <div class="field-error" *ngIf="form.controls['password'].invalid && form.controls['password'].touched">
+        Password must be at least 6 characters.
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn secondary" (click)="cancel()" [disabled]="loading">Cancel</button>
+        <button type="submit" class="btn primary" [disabled]="loading">{{ loading ? 'Signing in...' : 'Sign In' }}</button>
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </div>
+</div>
