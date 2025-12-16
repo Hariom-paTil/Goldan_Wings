@@ -4,7 +4,7 @@
     <h3>Most Loved Cakes</h3>
   </div>
 
-  <div *ngIf="cakes?.length; else empty" class="topchoice__grid">
+  <div *ngIf="cakes.length; else empty" class="topchoice__grid">
     <div class="card" *ngFor="let cake of cakes">
       <div class="card__image">
         <img [src]="cake.imageUrl" [alt]="cake.name" />

@@ -5,7 +5,7 @@
     <div class="divider"></div>
   </div>
 
-  <div class="about__body">
+  <div *ngIf="!isOrderActive" class="about__body">
     <div class="about__image">
       <img src="/assets/header_img.jpg" alt="Fresh chocolate cake" />
     </div>
@@ -39,6 +39,9 @@
 
 <div class="section-divider" aria-hidden="true"></div>
 
+<!-- Child routes for About (e.g., /about/order) render here -->
+<router-outlet></router-outlet>
+
 <!-- Top choices component shows 10 cakes fetched from API -->
-<app-top-choice></app-top-choice>
+<app-top-choice *ngIf="!isOrderActive"></app-top-choice>
 
