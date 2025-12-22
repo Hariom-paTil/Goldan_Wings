@@ -1,6 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
 
-/* Global Animation for Buttons and Options */
+$brand-primary: #ff6b6b;
+$brand-gradient: linear-gradient(90deg, #ff8a65, #ff6b6b);
+$brand-secondary: #2a1a22;
+$accent: #d57f1f;
+$text-color: #2a1a22;
+$muted-color: #6b4a4f;
+$radius: 12px;
+$shadow-1: 0 8px 20px rgba(0, 0, 0, 0.08);
+$shadow-2: 0 16px 36px rgba(0, 0, 0, 0.18);
+$dur-fast: 120ms;
+$dur-normal: 180ms;
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pop-in {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.anim-fade-in { animation: fade-in $dur-normal ease both; }
+.anim-pop-in { animation: pop-in $dur-normal ease both; }
+.anim-slide-up { animation: slide-up $dur-normal ease both; }
+
 button,
 .btn,
 .icon-button,
@@ -14,8 +44,8 @@ input[type="reset"],
 select,
 input[type="checkbox"],
 input[type="radio"] {
-  transition: transform 0.1s ease-in-out !important;
-  cursor: pointer; /* Ensure pointer cursor for interactive elements */
+  transition: transform $dur-fast ease !important;
+  cursor: pointer;
 }
 
 button:active,
@@ -33,3 +63,31 @@ input[type="checkbox"]:active,
 input[type="radio"]:active {
   transform: scale(0.95) !important;
 }
+
+button:focus-visible,
+.btn:focus-visible,
+.icon-button:focus-visible,
+.nav__link:focus-visible,
+.menu-item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 120, 160, 0.35);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  border: none;
+  border-radius: $radius;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: transform $dur-fast ease, box-shadow $dur-fast ease, filter $dur-fast ease;
+  will-change: transform;
+}
+
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: scale(0.96); }
+
+.hover-lift { transition: transform $dur-fast ease, box-shadow $dur-fast ease; }
+.hover-lift:hover { transform: translateY(-2px); }

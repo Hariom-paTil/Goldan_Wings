@@ -46,6 +46,13 @@
   background: #fff;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  animation: slide-up 200ms ease both;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
 }
 
 .card__image img {
