@@ -1,16 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
 
-$brand-primary: #ff6b6b;
-$brand-gradient: linear-gradient(90deg, #ff8a65, #ff6b6b);
-$brand-secondary: #2a1a22;
-$accent: #d57f1f;
-$text-color: #2a1a22;
-$muted-color: #6b4a4f;
+$brand-primary: #f08632;
+$brand-secondary: #111111;
+$brand-contrast: #fff7ed;
+$accent: #f7c59f;
+$text-color: #20141a;
+$muted-color: #6b5b63;
+$brand-gradient: linear-gradient(120deg, #f5a340, #f08632);
 $radius: 12px;
 $shadow-1: 0 8px 20px rgba(0, 0, 0, 0.08);
 $shadow-2: 0 16px 36px rgba(0, 0, 0, 0.18);
 $dur-fast: 120ms;
 $dur-normal: 180ms;
+
+body {
+  font-family: 'Montserrat', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: $text-color;
+  background: linear-gradient(180deg, #fffaf5 0%, #fff3e6 40%, #fffaf5 100%);
+}
 
 @keyframes fade-in {
   from { opacity: 0; }
@@ -91,3 +99,26 @@ button:focus-visible,
 
 .hover-lift { transition: transform $dur-fast ease, box-shadow $dur-fast ease; }
 .hover-lift:hover { transform: translateY(-2px); }
+
+/* Responsive card & image defaults for a cleaner, more professional look */
+img { max-width: 100%; height: auto; display: block; }
+
+.card__image img,
+.preview,
+.thumb {
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  transition: transform $dur-fast ease, box-shadow $dur-fast ease;
+}
+
+.card__image img:hover,
+.preview:hover,
+.thumb:hover { transform: translateY(-3px); }
+
+/* Utility responsive adjustments */
+@media (max-width: 900px) {
+  $radius: 10px;
+  .card__image img, .preview, .thumb { border-radius: 8px; }
+}
+
