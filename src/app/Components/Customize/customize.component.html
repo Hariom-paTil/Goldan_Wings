@@ -1,0 +1,111 @@
+<div class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal big">
+    <div class="modal__header">
+      <h2>Customize Cake</h2>
+      <button class="close" (click)="close.emit()">✕</button>
+    </div>
+
+    <div class="modal__content">
+      <p class="muted">Choose a base cake to start customization or create a photo cake.</p>
+      <div class="split-grid">
+        <div class="left-col">
+          <h4 class="section-title">Image Cakes</h4>
+          <div class="grid left-grid">
+            <div class="card photo-card hover-lift anim-slide-up">
+              <div class="card__image clickable" (click)="openImageDetail()">
+                <img src="assets/header_img.jpg" alt="Photo Cake" />
+              </div>
+              <div class="card__body">
+                <h4>Photo Cake</h4>
+                <p class="price">$ 24</p>
+                <div class="actions">
+                  <button class="btn add" (click)="openImageDetail()">Customize Photo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="right-col">
+          <h4 class="section-title">Normal Cakes</h4>
+          <div *ngIf="loadingCustom" class="loading">Loading cakes…</div>
+          <div *ngIf="errorCustom" class="error">{{ errorCustom }}</div>
+          <div class="grid right-grid" *ngIf="!loadingCustom && !errorCustom">
+            <div class="card hover-lift anim-slide-up" *ngFor="let cake of cakes">
+              <div class="card__image clickable" (click)="openDetail(cake)">
+                <img [src]="cake.imageUrl" [alt]="cake.name" />
+              </div>
+              <div class="card__body">
+                <h4>{{ cake.name }}</h4>
+                <p class="price">$ {{ cake.price }}</p>
+                <div class="actions">
+                  <button class="btn add" (click)="openDetail(cake)">Customize</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal__footer">
+      <button class="btn secondary" (click)="close.emit()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="detailOpen" role="dialog" aria-modal="true">
+  <div class="modal detail">
+    <div class="modal__header">
+      <h3>Customize: {{ selectedCake?.name }}</h3>
+      <button class="close" (click)="closeDetail()">✕</button>
+    </div>
+
+    <div class="modal__content">
+      <div class="detail-grid">
+        <div class="left">
+          <img class="preview" [src]="customImageUrl || selectedCake?.imageUrl" [alt]="selectedCake?.name" />
+          <div class="total">
+            Total: <strong>$ {{ totalPrice.toFixed(2) }}</strong>
+          </div>
+        </div>
+
+        <div class="right">
+          <div *ngIf="imageMode" class="image-options">
+            <label>Upload Image
+              <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+            </label>
+            <label>Image URL
+              <input [(ngModel)]="customImageUrl" placeholder="https://example.com/your-image.jpg" />
+            </label>
+          </div>
+          <label>Size
+            <select [(ngModel)]="selectedSize">
+              <option *ngFor="let s of sizes" [ngValue]="s">{{ s.label }} (+$ {{ s.inc }})</option>
+            </select>
+          </label>
+
+          <label>Flavor
+            <select [(ngModel)]="selectedFlavor">
+              <option *ngFor="let f of flavors" [ngValue]="f">{{ f.label }} (+$ {{ f.inc }})</option>
+            </select>
+          </label>
+
+          <label>Flower Decoration
+            <select [(ngModel)]="selectedFlower">
+              <option *ngFor="let fl of flowers" [ngValue]="fl">{{ fl.label }} (+$ {{ fl.inc }})</option>
+            </select>
+          </label>
+
+          <label>Notes
+            <textarea [(ngModel)]="note" rows="3" placeholder="Your personalization notes"></textarea>
+          </label>
+
+          <div class="actions">
+            <button class="btn secondary" (click)="closeDetail()">Cancel</button>
+            <button class="btn confirm" (click)="addToCart()">Add to cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

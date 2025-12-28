@@ -8,11 +8,12 @@ import { OrderConfirmComponent } from '../OrderConfirm/order-confirm.component';
 import { AuthService, User } from '../../Services/auth.service';
 import { Observable } from 'rxjs';
 import { CartService } from '../../Services/cart.service';
+import { CustomizeComponent } from '../Customize/customize.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, SignupComponent, OrderModalComponent, CartModalComponent, OrderConfirmComponent],
+  imports: [CommonModule, RouterModule, SignupComponent, OrderModalComponent, CartModalComponent, OrderConfirmComponent, CustomizeComponent],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
@@ -26,6 +27,7 @@ export class HeaderComponent {
   showCart = false;
 
   showOrderConfirm = false;
+  showCustomize = false;
 
   constructor(private auth: AuthService, private cart: CartService) {
     this.user$ = this.auth.user$;
@@ -46,6 +48,14 @@ export class HeaderComponent {
 
   closeOrder() {
     this.showOrder = false;
+  }
+
+  openCustomize() {
+    this.showCustomize = true;
+  }
+
+  closeCustomize() {
+    this.showCustomize = false;
   }
 
   openCart() {

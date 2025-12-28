@@ -4,46 +4,117 @@ import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Cake } from '../Interfaces/cake.interface';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class CakeService {
-  // Prefer backend API if available; fallback to local assets.
+  // Backend APIs
   private base = 'https://localhost:7196/api/Cakes';
+  private customizeBase = 'https://localhost:7196/api/CakeCustomize';
 
   constructor(private http: HttpClient) {}
 
-  getCakes(limit = 10): Observable<Cake[]> {
-    return this.http
-      .get<any[]>(`${this.base}?limit=${limit}`)
-      .pipe(
-        map((items) =>
-          (items || [])
-            .slice(0, limit)
-            .map((it: any, i: number) => ({
-              id: it.id ?? i + 1,
-              name: it.name ?? it.title ?? `Cake ${i + 1}`,
-              flavor: it.flavor ?? it.flavour ?? undefined,
-              imageUrl: this.normalizeImage(it.imageUrl ?? it.image ?? '', i + 1),
-              price: it.price ?? Math.round(10 + Math.random() * 40),
-            }))
-        ),
-        catchError(() => of(this.fallbackCakes(limit)))
-      );
+  // ------------------ NORMAL CAKES ------------------
+  getCakes(limit: number = 10): Observable<Cake[]> {
+    return this.http.get<any[]>(`${this.base}?limit=${limit}`).pipe(
+      map((items: any[]) =>
+        (items || []).slice(0, limit).map((it: any, i: number) => ({
+          id: it.id ?? i + 1,
+          name: it.name ?? it.title ?? `Cake ${i + 1}`,
+          flavor: it.flavor ?? it.flavour ?? undefined,
+          imageUrl: this.normalizeImage(
+            it.imageUrl ?? it.image ?? '',
+            i + 1
+          ),
+          price:
+            this.parsePrice(it.price) ??
+            Math.round(10 + Math.random() * 40),
+        }))
+      ),
+      catchError(() => of(this.fallbackCakes(limit)))
+    );
   }
 
-  private normalizeImage(src: string, index: number) {
-    // Default to the existing assets (folder 'Img' contains img-1.jpg ... img-10.jpg)
-    if (!src) return `/assets/Img/img-${index}.jpg`;
-    const file = src.split('/').pop() || src;
-    // If API returned a filename like 'img-1.jpg' or 'cake1.jpg', prefer assets/Img
-    if (!/^https?:\/\//i.test(src) && !src.startsWith('/')) {
-      return `/assets/Img/${file}`;
+  // ------------------ CUSTOM CAKES ------------------
+  getCustomCakes(limit: number = 12): Observable<Cake[]> {
+    return this.http.get<any>(`${this.customizeBase}?limit=${limit}`).pipe(
+      map((resp: any) => {
+        const items: any[] = Array.isArray(resp)
+          ? resp
+          : resp?.data ?? resp?.result ?? [];
+
+        return items.slice(0, limit).map((it: any, i: number) => ({
+          id: it.id ?? it.cakeId ?? 10000 + i + 1,
+          name:
+            it.name ??
+            it.title ??
+            it.cakeName ??
+            `Custom Cake ${i + 1}`,
+          flavor: it.flavor ?? it.flavour ?? undefined,
+          imageUrl: this.normalizeImage(
+            it.imageUrl ??
+              it.imageURL ??
+              it.ImageUrl ??
+              it.image ??
+              it.imgUrl ??
+              it.imagePath ??
+              '',
+            (i % 10) + 1
+          ),
+          price:
+            this.parsePrice(
+              it.price ?? it.Price ?? it.amount ?? it.cost
+            ) ?? Math.round(20 + Math.random() * 30),
+        }));
+      }),
+      catchError(() => of(this.fallbackCakes(limit)))
+    );
+  }
+
+  // ------------------ IMAGE NORMALIZER ------------------
+  private normalizeImage(src: string, index: number): string {
+    let clean = (src || '').trim();
+    clean = clean.replace(/assest/gi, 'assets');
+    clean = clean.replace(/\\/g, '/');
+
+    if (!clean) {
+      return `/assets/Img/img-${index}.jpg`;
     }
-    // normalize lowercase folder to actual 'Img'
-    if (src.startsWith('/assets/img/')) return src.replace('/assets/img/', '/assets/Img/');
-    return src;
+
+    // Absolute URL
+    if (/^https?:\/\//i.test(clean)) {
+      const assetsIndex = clean.toLowerCase().indexOf('/assets/');
+      if (assetsIndex >= 0) {
+        return clean.substring(assetsIndex);
+      }
+      return clean;
+    }
+
+    // Frontend assets
+    if (clean.startsWith('/assets/')) return clean;
+    if (clean.startsWith('assets/')) return `/${clean}`;
+
+    // Backend relative paths
+    if (clean.startsWith('/')) {
+      return `https://localhost:7196${clean}`;
+    }
+
+    if (/^(uploads|images|files)\//i.test(clean)) {
+      return `https://localhost:7196/${clean}`;
+    }
+
+    // Only filename
+    return `/assets/Img/${clean}`;
   }
 
-  // Fallback local data when API is not available
+  // ------------------ PRICE PARSER ------------------
+  private parsePrice(val: any): number | null {
+    if (val === null || val === undefined) return null;
+    const num = Number(val);
+    return isNaN(num) ? null : num;
+  }
+
+  // ------------------ FALLBACK DATA ------------------
   private fallbackCakes(limit: number): Cake[] {
     return Array.from({ length: limit }, (_, i) => ({
       id: i + 1,
