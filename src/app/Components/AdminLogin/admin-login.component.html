@@ -1,0 +1,76 @@
+<div class="admin-login-container">
+  <div class="admin-login-box">
+    <div class="admin-header">
+      <h1>AdminLogin</h1>
+      <p class="subtitle">Secure Admin Panel</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="admin-form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          formControlName="email"
+          type="email"
+          placeholder="admin@example.com"
+          class="form-input"
+        />
+        <div
+          class="field-error"
+          *ngIf="form.controls['email'].invalid && form.controls['email'].touched"
+        >
+          Please enter a valid email.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          formControlName="password"
+          type="password"
+          placeholder="Enter password"
+          class="form-input"
+        />
+        <div
+          class="field-error"
+          *ngIf="form.controls['password'].invalid && form.controls['password'].touched"
+        >
+          Password must be at least 6 characters.
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="error">
+        <span class="error-icon">⚠️</span> {{ error }}
+      </div>
+
+      <div class="success-message" *ngIf="successMessage">
+        <span class="success-icon">✓</span> {{ successMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn-login"
+        [disabled]="loading || form.invalid"
+        [class.loading]="loading"
+      >
+        {{ loading ? 'Logging in...' : success ? 'Success!' : 'Login' }}
+      </button>
+
+      <div class="divider">or</div>
+
+      <button type="button" class="btn-secondary" (click)="goToHome()">
+        Back to Home
+      </button>
+    </form>
+
+    <div class="admin-footer">
+      <p class="security-note">
+        🔒 This is a secure admin panel. Unauthorized access is prohibited.
+      </p>
+    </div>
+  </div>
+
+  <!-- Background decoration -->
+  <div class="background-decoration"></div>
+</div>

@@ -1,12 +1,16 @@
 import { Routes } from '@angular/router';
 import { AboutComponent } from './Components/About/about.component';
 import { OrderComponent } from './Components/Order/order.component';
+import { AdminLoginComponent } from './Components/AdminLogin/admin-login.component';
 
 export const routes: Routes = [
   {
     path: 'about',
     component: AboutComponent,
-    children: [{ path: 'order', component: OrderComponent }],
+    children: [
+      { path: 'order', component: OrderComponent },
+      { path: 'G_W_AdminPanel', component: AdminLoginComponent }
+    ],
   },
   { path: '', redirectTo: 'about', pathMatch: 'full' },
 ];
