@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { AboutComponent } from './Components/About/about.component';
 import { OrderComponent } from './Components/Order/order.component';
 import { AdminLoginComponent } from './Components/AdminLogin/admin-login.component';
+import { AdminHomeComponent } from './Components/AdminHome/admin-home.component';
+import { adminAuthGuard, adminLoggedInRedirectGuard } from './Guards/admin-auth.guard';
 
 export const routes: Routes = [
   {
@@ -9,7 +11,8 @@ export const routes: Routes = [
     component: AboutComponent,
     children: [
       { path: 'order', component: OrderComponent },
-      { path: 'G_W_AdminPanel', component: AdminLoginComponent }
+      { path: 'G_W_AdminPanel', component: AdminLoginComponent, canActivate: [adminLoggedInRedirectGuard] },
+      { path: 'G_W_AdminPanel/home', component: AdminHomeComponent, canActivate: [adminAuthGuard] }
     ],
   },
   { path: '', redirectTo: 'about', pathMatch: 'full' },

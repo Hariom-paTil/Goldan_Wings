@@ -1,0 +1,36 @@
+.admin-home {
+  padding: 18px 16px 22px;
+  background: linear-gradient(135deg, #fff7ee 0%, #ffffff 40%, #ffe2c8 100%);
+  border-radius: 16px;
+  border: 2px solid rgba(240, 134, 50, 0.35);
+  box-shadow: 0 16px 32px rgba(240, 134, 50, 0.25);
+  color: #2a1a1a;
+  min-height: 240px;
+}
+
+.admin-home__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.admin-home__header h2 {
+  margin: 0;
+  font-weight: 900;
+  font-size: 1.6rem;
+}
+
+.subtitle {
+  margin: 0;
+  color: #70401f;
+  font-weight: 600;
+}
+
+.admin-home__body {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px dashed rgba(240, 134, 50, 0.45);
+}

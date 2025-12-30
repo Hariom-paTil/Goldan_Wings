@@ -14,14 +14,30 @@ import { filter } from 'rxjs/operators';
 })
 export class AboutComponent implements OnInit {
   isOrderActive = false;
+  isAdminModalActive = false;
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    // Toggle state when route changes so About can hide/show sections when /about/order is active
-    this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => {
-      this.isOrderActive = this.router.url.includes('/about/order');
-    });
+    this.updateRouteState(this.router.url);
+
+    // Track route changes so About can toggle sections and modals
+    this.router.events
+      .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+      .subscribe((event) => {
+        this.updateRouteState(event.urlAfterRedirects);
+      });
+  }
+
+  closeAdminModal(): void {
+    if (this.isAdminModalActive) {
+      this.router.navigate(['/about']);
+    }
+  }
+
+  private updateRouteState(url: string): void {
+    this.isOrderActive = url.includes('/about/order');
+    this.isAdminModalActive = url.includes('/about/G_W_AdminPanel');
   }
 }
 

@@ -40,7 +40,33 @@
 <div class="section-divider" aria-hidden="true"></div>
 
 <!-- Child routes for About (e.g., /about/order) render here -->
-<router-outlet></router-outlet>
+<ng-container *ngIf="isAdminModalActive; else standardChild">
+  <div
+    class="admin-modal-backdrop"
+    (click)="closeAdminModal()"
+    aria-label="Close admin login modal"
+  ></div>
+  <div
+    class="admin-modal-shell"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Admin login"
+  >
+    <button
+      type="button"
+      class="admin-modal-close"
+      aria-label="Close admin login"
+      (click)="closeAdminModal()"
+    >
+      X
+    </button>
+    <router-outlet></router-outlet>
+  </div>
+</ng-container>
+
+<ng-template #standardChild>
+  <router-outlet></router-outlet>
+</ng-template>
 
 <!-- Top choices component shows 10 cakes fetched from API -->
 <app-top-choice *ngIf="!isOrderActive"></app-top-choice>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { AdminLoginService } from '../../Services/admin-login.service';
 
 @Component({
   selector: 'app-admin-login',
@@ -22,19 +22,17 @@ export class AdminLoginComponent implements OnInit {
   success = false;
   successMessage: string | null = null;
 
-  private adminLoginUrl = 'https://localhost:7196/api/AdminLogin';
-
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private http: HttpClient
+    private adminLoginService: AdminLoginService
   ) {}
 
   ngOnInit(): void {
     // Check if already logged in as admin
     const adminToken = this.getAdminToken();
     if (adminToken) {
-      this.router.navigate(['/admin/dashboard']);
+      this.router.navigate(['/about/G_W_AdminPanel/home']);
     }
   }
 
@@ -55,10 +53,7 @@ export class AdminLoginComponent implements OnInit {
       email: email,
       password: password,
     };
-
-    this.http.post<any>(this.adminLoginUrl, payload, {
-      responseType: 'text' as 'json',
-    }).subscribe({
+    this.adminLoginService.login(payload).subscribe({
       next: (res: any) => {
         this.loading = false;
         console.log('Admin login response:', res);
@@ -76,10 +71,10 @@ export class AdminLoginComponent implements OnInit {
           }
         } catch {}
 
-        // Redirect to admin dashboard after 1.5 seconds
+        // Redirect to admin home modal after 0.8 seconds
         setTimeout(() => {
-          this.router.navigate(['/admin/dashboard']);
-        }, 1500);
+          this.router.navigate(['/about/G_W_AdminPanel/home']);
+        }, 800);
       },
       error: (err: any) => {
         this.loading = false;
