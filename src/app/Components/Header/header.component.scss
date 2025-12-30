@@ -203,6 +203,34 @@ app-signup {
   text-align: left;
   cursor: pointer;
 }
+
+.admin-nav {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.logout-button {
+  background: linear-gradient(135deg, #f08632 0%, #d97423 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.logout-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(240, 134, 50, 0.35);
+}
+
+.logout-button:active {
+  transform: translateY(0);
+}
+
 @media (max-width: 920px) {
   .header {
     grid-template-columns: 1fr;

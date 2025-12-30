@@ -1,9 +1,120 @@
 <div class="admin-home">
   <div class="admin-home__header">
-    <h2>Admin Panel</h2>
-    <p class="subtitle">Welcome, admin. This is a placeholder view.</p>
+    <h1>Admin Dashboard</h1>
+    <p class="subtitle">Manage your cake shop orders and inventory</p>
   </div>
-  <div class="admin-home__body">
-    <p>Replace this content with your admin dashboard when ready.</p>
+
+  <!-- Admin Navigation Tabs -->
+  <div class="admin-tabs">
+    <button 
+      class="admin-tab" 
+      [class.active]="currentSection === 'overview'"
+      (click)="setSection('overview')">
+      📊 Overview
+    </button>
+    <button 
+      class="admin-tab" 
+      [class.active]="currentSection === 'pop-orders'"
+      (click)="setSection('pop-orders')">
+      📦 Orders
+    </button>
+    <button 
+      class="admin-tab" 
+      [class.active]="currentSection === 'add-cakes'"
+      (click)="setSection('add-cakes')">
+      🍰 Add Cakes
+    </button>
+  </div>
+
+  <!-- Overview Section -->
+  <div class="admin-home__body" *ngIf="currentSection === 'overview'">
+    <div class="section-container">
+      <h2>Welcome to Admin Panel</h2>
+      <p>Select a section from the tabs above to manage your cake shop.</p>
+      
+      <div class="admin-cards">
+        <div class="admin-card" (click)="setSection('pop-orders')">
+          <div class="card-icon">📦</div>
+          <h3>Pop Orders</h3>
+          <p>View and manage pending orders from customers.</p>
+        </div>
+        
+        <div class="admin-card" (click)="setSection('add-cakes')">
+          <div class="card-icon">🍰</div>
+          <h3>Add Cakes</h3>
+          <p>Add new cake items to your shop inventory.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pop Orders Section -->
+  <div class="admin-home__body" *ngIf="currentSection === 'pop-orders'">
+    <div class="section-container">
+      <h2>Pending Orders</h2>
+      
+      <!-- Loading State -->
+      <div class="loading-state" *ngIf="loading">
+        <p>⏳ Loading orders...</p>
+      </div>
+
+      <!-- Error State -->
+      <div class="error-state" *ngIf="error">
+        <p>❌ {{ error }}</p>
+      </div>
+
+      <!-- Orders Table -->
+      <div class="orders-table-wrapper" *ngIf="!loading && !error && orders.length > 0">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Cakes</th>
+              <th>Total Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of orders" class="order-row">
+              <td>{{ order.firstName }}</td>
+              <td>{{ order.lastName }}</td>
+              <td>{{ order.email }}</td>
+              <td>{{ order.address }}</td>
+              <td class="cakes-cell">
+                <div class="cakes-list">
+                  <div *ngFor="let cake of order.cakes" class="cake-item">
+                    <span class="cake-name">{{ cake.cakeName }}</span>
+                    <span class="cake-price">₹{{ cake.price }}</span>
+                  </div>
+                </div>
+              </td>
+              <td class="total-cell">
+                <span class="total-amount">₹{{ calculateTotal(order) }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty State -->
+      <div class="placeholder" *ngIf="!loading && !error && orders.length === 0">
+        <p>📦 No orders found</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Cakes Section -->
+  <div class="admin-home__body" *ngIf="currentSection === 'add-cakes'">
+    <div class="section-container">
+      <h2>Add New Cake</h2>
+      <div class="add-cakes-content">
+        <p>Add new cake items to your inventory - to be implemented.</p>
+        <div class="placeholder">
+          <p>🍰 Add new cake form will appear here</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

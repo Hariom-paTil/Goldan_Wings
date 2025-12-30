@@ -12,7 +12,12 @@ export const routes: Routes = [
     children: [
       { path: 'order', component: OrderComponent },
       { path: 'G_W_AdminPanel', component: AdminLoginComponent },
-      { path: 'G_W_AdminPanel/home', component: AdminHomeComponent, canActivate: [adminAuthGuard] }
+      { 
+        path: 'G_W_AdminPanel/home', 
+        component: AdminHomeComponent, 
+        canActivate: [adminAuthGuard],
+        data: { admin: true }
+      }
     ],
   },
   { path: '', redirectTo: 'about', pathMatch: 'full' },

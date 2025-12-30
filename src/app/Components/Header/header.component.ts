@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { SignupComponent } from '../Signup/signup.component';
 import { OrderModalComponent } from '../OrderModal/order-modal.component';
 import { CartModalComponent } from '../CartModal/cart-modal.component';
@@ -9,6 +9,7 @@ import { AuthService, User } from '../../Services/auth.service';
 import { Observable } from 'rxjs';
 import { CartService } from '../../Services/cart.service';
 import { CustomizeComponent } from '../Customize/customize.component';
+import { AdminSessionService } from '../../Services/admin-session.service';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +18,7 @@ import { CustomizeComponent } from '../Customize/customize.component';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   showSignup = false;
   showMenu = false;
   user$: Observable<User | null>;
@@ -29,9 +30,15 @@ export class HeaderComponent {
   showOrderConfirm = false;
   showCustomize = false;
 
-  constructor(private auth: AuthService, private cart: CartService) {
+  isAdminLoggedIn = false;
+
+  constructor(private auth: AuthService, private cart: CartService, private adminSession: AdminSessionService, private router: Router) {
     this.user$ = this.auth.user$;
     this.count$ = this.cart.count$;
+  }
+
+  ngOnInit() {
+    this.isAdminLoggedIn = this.adminSession.hasToken();
   }
 
   openSignup() {
@@ -81,6 +88,20 @@ export class HeaderComponent {
   logout() {
     this.showMenu = false;
     this.auth.logout();
+  }
+
+  adminLogout() {
+    this.adminSession.clear();
+    this.isAdminLoggedIn = false;
+    this.router.navigate(['/about/G_W_AdminPanel']);
+  }
+
+  navigateToPopOrders() {
+    this.router.navigate(['/about/G_W_AdminPanel/home/pop-orders']);
+  }
+
+  navigateToAddCakes() {
+    this.router.navigate(['/about/G_W_AdminPanel/home/add-cakes']);
   }
 }
 
